@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for f in datasets/*.tar.gz; do
+	tar -xzf $f
+done

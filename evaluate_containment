@@ -1,0 +1,18 @@
+#!/bin/bash
+
+trap times EXIT
+
+source SET_VARS
+
+CLS="de.uni_mannheim.informatik.dws.tnt.match.cli.EvaluateEntityStitchedUnionTables"
+
+host="$1"
+
+echo $(date)": evaluating $host"
+
+TBL="$host/normalised_fd_relations"
+EVAL="$host/evaluation/normalised_fd_relations"
+
+$J8 $VMARGS -cp $JAR $CLS -tables $TBL -reference $EVAL -containment -labelsMatch -filenamesMatch > $host/evaluate_containment_N.log 2>&1
+
+echo $(date)": $host done."

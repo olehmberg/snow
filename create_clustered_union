@@ -1,0 +1,14 @@
+#!/bin/bash
+
+source SET_VARS
+
+CLS="de.uni_mannheim.informatik.dws.tnt.match.cli.CreateClusteredUnionTables"
+
+
+echo "Creating clustered union for $1"
+
+rm -r clustered_union/$1/
+mkdir clustered_union/$1
+
+$J8 $VMARGS -cp $JAR $CLS -web hosts/$1 -results clustered_union/$1/ -correspondences clustered_union_correspondences/$1.tsv -log clustered_union_statistics.tsv -urlStatistics url_statistics/$1.tsv > clustered_union_logs/$1.log 2>&1
+

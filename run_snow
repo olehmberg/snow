@@ -1,0 +1,30 @@
+#!/bin/bash
+
+trap times EXIT
+
+source SET_VARS
+
+CLS="de.uni_mannheim.informatik.dws.tnt.match.cli.NormaliseWebTables"
+
+ENT="50"
+DEN="0.0"
+FD="0.95"
+
+STITCH="BothTablesFullyMapped"
+#STITCH="DeterminantClusters"
+STITCH2="OneKeyFullyMapped"
+NORM="_2NF"
+
+host="$1"
+
+echo $(date)": $host"
+
+OUT="$host/normalised"
+rm -r $OUT
+rm -r $OUT"_csv"
+rm -r $OUT"_fd_relations"
+$J8 $VMARGS -cp $JAR $CLS -web $host/union_dedup_json/ -results $OUT -csv $OUT"_csv" -candidateKeys $host/evaluation/candidateKeys.tsv -correspondences $host/evaluation/union_goldstandard.tsv -contextCorrespondences $host/evaluation/context_correspondences.tsv  -entityStructure $host/evaluation/entity_structure.tsv -functionalDependencies $host/evaluation/functional_dependencies.tsv -stitching $STITCH -normalisation $NORM -minEntities $ENT -minDensity $DEN -minFDApproximation $FD -heuristicDependencyPropagation -serialise -logFDStitching > $host/snow.log 2>&1
+
+cp $host/column_classification.tsv $host/column_classification_N.tsv
+
+echo $(date)": $host done."

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+trap times EXIT;
+
+source SET_VARS
+
+CLS="de.uni_mannheim.informatik.dws.tnt.match.cli.NormaliseWebTables"
+
+host="$1"
+	echo $(date)": $host"
+	WEB="$host/union_dedup_json/"
+	OUT="$host/goldstandard"
+	MATCHER="Trivial"
+
+	rm -r $OUT
+	rm -r $OUT"_csv"
+	rm -r $OUT"_fd_relations"
+
+	$J8 $VMARGS -cp $JAR $CLS -web $WEB -results $OUT -csv $OUT"_csv" -candidateKeys $host/evaluation/candidateKeys.tsv -correspondences $host/evaluation/union_goldstandard.tsv -contextCorrespondences $host/evaluation/context_correspondences.tsv -entityStructure $host/evaluation/entity_structure.tsv -functionalDependencies $host/evaluation/functional_dependencies.tsv -extractPredefinedRelations -normalisation None -stitching BothTablesFullyMapped > $host/snow_create_goldstandard.log 2>&1
+	
+	rm -r $host/evaluation/normalised
+	rm -r $host/evaluation/normalised_fd_relations
+
+	cp -r $OUT $host/evaluation/normalised
+	cp -r $OUT"_fd_relations" $host/evaluation/normalised_fd_relations
+	cp $host/column_classification.tsv $host/evaluation/column_classification.tsv
+
+	echo $(date)": $host done."

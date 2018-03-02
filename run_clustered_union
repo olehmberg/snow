@@ -1,0 +1,9 @@
+#!/bin/bash
+
+mkdir clustered_union_logs
+mkdir clustered_union_correspondences
+mkdir url_statistics
+
+for host in $1/*/; do
+	./create_clustered_union $(basename $host)
+done

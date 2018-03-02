@@ -1,0 +1,7 @@
+#!/bin/bash
+
+J8="/home/olehmber/java8/bin/java"
+
+JAR="$HOME/lib/snow-1.0.jar:$HOME/lib/winter-1.3-SNAPSHOT.jar:$HOME/lib/dep/*"
+
+VMARGS="-Xmx300G"
