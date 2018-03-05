@@ -3,3 +3,6 @@
 for f in datasets/*.tar.gz; do
 	tar -xzf $f
 done
+
+tar -xzf knowledgebase.tar.gz
+

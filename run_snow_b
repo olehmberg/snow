@@ -11,8 +11,6 @@ DEN="0.0"
 FD="0.95"
 
 STITCH="BothTablesFullyMapped"
-#STITCH="DeterminantClusters"
-STITCH2="OneKeyFullyMapped"
 NORM="_2NF"
 
 host="$1"

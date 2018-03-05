@@ -117,9 +117,9 @@ Or use `evaluate_containment_all` to run the evaluation on all datasets and conf
 
 To create new datasets, the clustered union tables must be created before running SNoW. Copy all web tables for a single web site in a directory and use `create_clustered_union` to create the union tables:
 
-`./create_clustered_union www.example.com`
+`./create_clustered_union directory_containing_a_single_web_site`
 
-If you want to create the union tables for multiple web sites, create a directory with one sub-directory for every web sites and run `run_clustered_union` with the directory as parameter:
+If you want to create the union tables for multiple web sites, create a directory with one sub-directory for every web site and run `run_clustered_union` with the directory as parameter:
 
 `./run_clustered_union directory_containing_all_web_sites`
 
