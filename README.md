@@ -22,14 +22,14 @@ Then, several schema matchers are employed to create a schema mapping among the 
 Afterwards, the schema mapping is used to stitch the union tables into larger *stitched union tables*, which are then used to discover functional dependencies.
 Finally, a last stitching step creates a *stitched universal relation* from all stitched union tables, which is then normalised using the functional dependencies discovered earlier to create the integrated schema.
 
-![SNoW Process Overview](/img/overview.png)
+![SNoW Process Overview](/img/overview.PNG)
 
 As an example, consider the web table in the next figure, which contains employment statistics for a certain occupation in several u.s. states at a given time.
 While a human can easily understand this, it is hard for an algorithm, as the table contains only very few examples (the figure shows the complete table) and important attributes such as the occupation and the date are missing from the table.
 But, by considering all web tables from the same web site and the context surrounding them on the original web pages, the SNoW system is able to discover the correct functional dependency *\{state, occupation, year, month\}&rarr;\{employment\}* and synthesizes an n-ary relation containing all these attributes.
 Existing methods, however, would extract this data as binary relation *\{state,employment\}*, resulting in about 2\,000 different employment numbers for a single state, without any additional information, for the web site in the example.
 
-![Example Web Table](/img/example_table.png)
+![Example Web Table](/img/example_table.PNG)
 
 ## Project Structure
 
