@@ -17,12 +17,12 @@ host="$1"
 
 echo $(date)": $host"
 
-OUT="$host/normalised"
+OUT="$host/normalised_S"
 rm -r $OUT
 rm -r $OUT"_csv"
 rm -r $OUT"_fd_relations"
-$J8 $VMARGS -cp $JAR $CLS -web $host/union_dedup_json/ -results $OUT -csv $OUT"_csv" -candidateKeys $host/evaluation/candidateKeys.tsv -correspondences $host/evaluation/union_goldstandard.tsv -contextCorrespondences $host/evaluation/context_correspondences.tsv  -entityStructure $host/evaluation/entity_structure.tsv -functionalDependencies $host/evaluation/functional_dependencies.tsv -stitching $STITCH -normalisation $NORM -minEntities $ENT -minDensity $DEN -minFDApproximation $FD -heuristicDependencyPropagation -serialise -logFDStitching > $host/snow.log 2>&1
+$J8 $VMARGS -cp $JAR $CLS -web $host/union_dedup_json/ -results $OUT -csv $OUT"_csv" -candidateKeys $host/evaluation/candidateKeys.tsv -correspondences $host/evaluation/union_goldstandard.tsv -contextCorrespondences $host/evaluation/context_correspondences.tsv  -entityStructure $host/evaluation/entity_structure.tsv -functionalDependencies $host/evaluation/functional_dependencies.tsv -stitching $STITCH -normalisation $NORM -minEntities $ENT -minDensity $DEN -minFDApproximation $FD -serialise -logFDStitching > $host/snow_S.log 2>&1
 
-cp $host/column_classification.tsv $host/column_classification_N.tsv
+cp $host/column_classification.tsv $host/column_classification_S.tsv
 
 echo $(date)": $host done."

@@ -5,28 +5,28 @@ trap times EXIT
 source SET_VARS
 
 CLS="de.uni_mannheim.informatik.dws.tnt.match.cli.EvaluateEntityStitchedUnionTables"
-LOG="goldstandard/evaluation_results_containment.tsv"
+LOG="datasets/evaluation_results_containment.tsv"
 
-rm $LOG
-rm $LOG"_details.tsv"
+#rm $LOG
+#rm $LOG"_details.tsv"
 
 MATCHER="Trivial"
 
-for host in goldstandard/*/
+for host in datasets/*/
 do
 	EVAL="$host/evaluation/normalised_fd_relations"
 
-	TBL="$host/normalised_fd_relations"
+	TBL="$host/normalised_S_fd_relations"
 	echo $(date)": evaluating $host - $TBL"
-	$J8 $VMARGS -cp $JAR $CLS -tables $TBL -reference $EVAL -globalLog $LOG -containment -labelsMatch -filenamesMatch > $host/evaluate_containment_N.log 2>&1
+	$J8 $VMARGS -cp $JAR $CLS -tables $TBL -reference $EVAL -globalLog $LOG -containment -labelsMatch -filenamesMatch > $host/evaluate_containment_S.log 2>&1
 	
-	TBL="$host/normalised_b1_fd_relations"
+	TBL="$host/normalised_B_fd_relations"
 	echo $(date)": evaluating $host - $TBL"
-	$J8 $VMARGS -cp $JAR $CLS -tables $TBL -reference $EVAL -globalLog $LOG -containment -labelsMatch -filenamesMatch > $host/evaluate_containment_B1.log 2>&1
+	$J8 $VMARGS -cp $JAR $CLS -tables $TBL -reference $EVAL -globalLog $LOG -containment -labelsMatch -filenamesMatch > $host/evaluate_containment_B.log 2>&1
 
-	TBL="$host/unsupervised_"$MATCHER"_fd_relations"
+	TBL="$host/normalised_M_fd_relations"
 	echo $(date)": evaluating $host - $TBL"
-	$J8 $VMARGS -cp $JAR $CLS -tables $TBL -reference $EVAL -globalLog $LOG -containment -labelsMatch -filenamesMatch > $host/evaluate_containment_U_$MATCHER.log 2>&1
+	$J8 $VMARGS -cp $JAR $CLS -tables $TBL -reference $EVAL -globalLog $LOG -containment -labelsMatch -filenamesMatch > $host/evaluate_containment_M.log 2>&1
 
 	echo $(date)": $host done."
 

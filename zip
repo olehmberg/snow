@@ -3,3 +3,5 @@
 for d in datasets/*/; do
 	tar -czf ${d%/}.tar.gz $d
 done
+
+tar -czf knowledgebase.tar.gz knowledgebase

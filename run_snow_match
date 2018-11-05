@@ -9,7 +9,9 @@ CLS="de.uni_mannheim.informatik.dws.tnt.match.cli.NormaliseWebTables"
 ENT="50"
 DEN="0.0"
 FD="0.95"
-INST="10"
+#INST="10"
+INST="0"
+MATCHER="Trivial"
 DEF="knowledgebase/"
 RATIO="0.00"
 
@@ -20,14 +22,13 @@ host="$1"
 
 echo $(date)": $host"
 
-OUT="$host/matched"
+OUT="$host/normalised_M"
 rm -r $OUT
 rm -r $OUT"_csv"
 rm -r $OUT"_fd_relations"
-$J8 $VMARGS -cp $JAR $CLS -web $host/union_dedup_json/ -results $OUT -csv $OUT"_csv" -candidateKeys $host/evaluation/candidateKeys.tsv -correspondences $host/evaluation/union_goldstandard.tsv -contextCorrespondences $host/evaluation/context_correspondences.tsv -entityStructure $host/evaluation/entity_structure.tsv -entityDefinition $DEF -functionalDependencies $host/evaluation/functional_dependencies.tsv -normalisation $NORM -stitching $STITCH -minEntities $ENT -minDensity $DEN -minFDApproximation $FD -logEntityDetection -minInstanceCorrespondences $INST -heuristicDependencyPropagation -serialise -logFDStitching -minInstanceMatchRatio $RATIO > "$host/snow_match.log" 2>&1
+$J8 $VMARGS -cp $JAR $CLS -web $host/union_dedup_json/ -results $OUT -csv $OUT"_csv" -candidateKeys $host/evaluation/candidateKeys.tsv -correspondences $host/evaluation/union_goldstandard.tsv -contextCorrespondences $host/evaluation/context_correspondences.tsv -entityStructure $host/evaluation/entity_structure.tsv -entityDefinition $DEF -functionalDependencies $host/evaluation/functional_dependencies.tsv -matchTables -matcher $MATCHER -normalisation $NORM -stitching $STITCH -minEntities $ENT -minDensity $DEN -minFDApproximation $FD -minInstanceCorrespondences $INST -logEntityDetection -serialise -logFDStitching > "$host/snow_match.log" 2>&1
 
-
-cp $host/column_classification.tsv $host/column_classification_NE.tsv
-cp $host/entitytable_evaluation.tsv $host/entitytable_evaluation_NE.tsv
+cp $host/column_classification.tsv $host/column_classification_M.tsv
+cp $host/entitytable_evaluation.tsv $host/entitytable_evaluation_M.tsv
 
 echo $(date)": $host done."
