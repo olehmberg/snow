@@ -9,25 +9,29 @@ This means that, in many cases, the data can only be understood if more than two
 
 The SNoW system identifies and synthesizes n-ary relations from web tables and integrates them with a knowledge base.
 
-Given a set of web tables and a target knowledge base, the SNoW system applies schema matching and functional dependency discovery algorithms to create an integrated schema.
-The schema of the target knowledge base is used as a starting point for the integrated schema, which is then extended by the relations obtained from the web tables and their functional dependencies.
-The result is a star-shaped relational schema, with the classes from the knowledge base at the centres and additional relations from the web tables referring to them.
+Given a set of web tables and a target knowledge base, the SNoW method extends each web table with additional context columns, stitches matching web tables into larger tables, and applies functional dependency discovery to identify the relations that are represented in the web tables. Further, it normalises the stitched tables, guided by the schema of the knowledge base, to create an integrated schema.
 
 ## System Overview
 
 The following figure visualises the integration process of the SNoW system.
-It consists of several steps, which are briefly described in the following.
-The first step consists of stitching the web tables based on their column headers into *union tables*, and extracting data from the context of the web tables, such as the URL or page title, into additional columns of the union tables.
-Then, several schema matchers are employed to create a schema mapping among the union tables and between the union tables and the target knowledge base.
-Afterwards, the schema mapping is used to stitch the union tables into larger *stitched union tables*, which are then used to discover functional dependencies.
-Finally, a last stitching step creates a *stitched universal relation* from all stitched union tables, which is then normalised using the functional dependencies discovered earlier to create the integrated schema.
+First, each web table is extended with context columns, which are generated from the web page that contains the web table. Then, web tables with identical schema are stitched into *union tables*.
+These union tables contain more tuples than the original web tables and improve the performance of schema matchers, which are executed in the next step. 
+The schema matchers create a mapping among the union tables, to identify matching schemata which are expressed with different column headers, and a mapping from the union tables to the knowledge base. 
+Based on the mapping among the union tables, the stitching is repeated to merge all union tables
+with matching schemata into *stitched union tables*. 
+The stitched union tables contain the tuples of all web tables with the respective schema and enable the discovery of functional dependencies, which is infeasible on the much smaller original tables. 
+Finally, all stitched union tables which are mapped to the same knowledge base class are merged into a *stitched universal relation*, which is normalised to create an integrated schema. 
+This normalisation is guided by the mapping to the knowledge base and produces a star-shaped schema with the existing classes from the knowledge base at the centres and the n-ary relations that were discovered in the web tables referring to them.
 
 ![SNoW Process Overview](/img/overview.PNG)
 
-As an example, consider the web table in the next figure, which contains employment statistics for a certain occupation in several u.s. states at a given time.
-While a human can easily understand this, it is hard for an algorithm, as the table contains only very few examples (the figure shows the complete table) and important attributes such as the occupation and the date are missing from the table.
-But, by considering all web tables from the same web site and the context surrounding them on the original web pages, the SNoW system is able to discover the correct functional dependency *\{state, occupation, year, month\}&rarr;\{employment\}* and synthesizes an n-ary relation containing all these attributes.
-Existing methods, however, would extract this data as binary relation *\{state,employment\}*, resulting in about 2\,000 different employment numbers for a single state, without any additional information, for the web site in the example.
+As an example, consider the web table in the next figure, which contains employment statistics for a certain profession in several U.S. states at a given time. 
+While a human can easily understand this, it is hard for an algorithm, as the table contains only very few examples (the figure shows the complete table) and important attributes, such as the profession and the date, are missing from the table.
+Existing approaches use recognisers or matchers to find column pairs which represent an existing or an unknown binary relation. 
+In the example, such systems would extract a binary relation {state, employment}, which can be found in thousands of web tables from the same web site. 
+As a result, the extracted binary relation contains about 2 000 different employment numbers for a single state and no possibility to choose a single, correct value, or to understand any individual value. 
+To extract a meaningful relation for the employment attribute, we must include all attributes which determine its value, i.e., discover the functional dependency {state, page title, URI 1, URI 2}&rarr;{employment}. 
+This is only possible if we take additional data from the context of the web table into account and combine the observations from multiple web tables, which contain employment numbers for  different professions and dates.
 
 ![Example Web Table](/img/example_table.PNG)
 
@@ -38,50 +42,37 @@ Existing methods, however, would extract this data as binary relation *\{state,e
 The datasets and annotations used for evaluation can be found in the `datasets/` directory.
 Every sub-directory is a dataset for a single web site and contains the pre-processed union tables in `union_dedup_json/` and the annotations in the `evaluation/` sub-directory.
 
-Dataset statistics: $A_O$=original attributes, $A_T$=total attributes (original \& context attributes), $A_U$=universal attributes, Cor.=correspondences among attributes in union tables.
-
-<table>
-<thead><tr><th></th><th colspan=3>Web Tables</th><th colspan=4>Clustered Union Tables</th><th colspan=4>Annotation</th></tr></thead><tbody>
- <tr><td>Host</td><td>Tables</td><td>Columns</td><td>Rows</td><td>Tables</td><td>A<sub>O</sub></td><td>A<sub>T</sub></td><td>Rows</td><td>Classes</td><td>A<sub>U</sub></td><td>Cor.</td><td>FDs</td></tr>
- <tr><td>d3football.com</td><td> 40,584   </td><td> 233,105   </td><td> 103,404   </td><td> 12   </td><td> 63   </td><td> 145   </td><td> 11,731   </td><td>2</td><td>41</td><td> 473   </td><td>18</td></tr>
- <tr><td>data.bls.gov</td><td> 10,824   </td><td> 59,087   </td><td> 54,193   </td><td> 12   </td><td> 61   </td><td> 181   </td><td> 52,629   </td><td>1</td><td>51</td><td> 459   </td><td>12</td></tr>
- <tr><td>flightaware.com</td><td> 2,888   </td><td> 13,712   </td><td> 19,820   </td><td> 6   </td><td> 22   </td><td> 72   </td><td> 19,613   </td><td>1</td><td>35</td><td> 67   </td><td>13</td></tr>
- <tr><td>itunes.apple.com</td><td> 42,729   </td><td> 258,275   </td><td> 494,302   </td><td> 76   </td><td> 470   </td><td> 1,095   </td><td> 491,977   </td><td>1</td><td>59</td><td> 30,809   </td><td>6</td></tr>
- <tr><td>seatgeek.com</td><td> 157,578   </td><td> 630,051   </td><td> 2,644,032   </td><td> 72   </td><td> 266   </td><td> 714   </td><td> 300,106   </td><td>6</td><td>71</td><td> 17,542   </td><td>30</td></tr>
- <tr><td>www.amoeba.com</td><td> 5,529   </td><td> 18,224   </td><td> 44,504   </td><td> 65   </td><td> 227   </td><td> 712   </td><td> 32,898   </td><td>2</td><td>42</td><td> 18,433   </td><td>13</td></tr>
- <tr><td>www.cia.gov</td><td> 30,569   </td><td> 121,460   </td><td> 6,221,350   </td><td> 213   </td><td> 562   </td><td> 2,225   </td><td> 70,809   </td><td>1</td><td>323</td><td> 182,833   </td><td>181</td></tr>
- <tr><td>www.nndb.com</td><td> 23,522   </td><td> 116,716   </td><td> 231,738   </td><td> 29   </td><td> 123   </td><td> 299   </td><td> 229,445   </td><td>6</td><td>29</td><td> 3,403   </td><td>10</td></tr>
- <tr><td>www.vgchartz.com</td><td> 23,258   </td><td> 116,285   </td><td> 58,637   </td><td> 8   </td><td> 39   </td><td> 87   </td><td> 33,715   </td><td>1</td><td>36</td><td> 140   </td><td>13</td></tr>
- <tr><td>Sum</td><td> 337,481   </td><td> 1,566,915   </td><td> 9,871,980   </td><td> 493   </td><td> 1,833   </td><td> 5,530   </td><td> 1,242,923   </td><td>14</td><td>687</td><td> 254,159   </td><td>296</td></tr>
-</tbody></table>
-
 ### SNoW Evaluation
 
 We run the SNoW system on our datasets in different configurations.
 The first two configurations do not apply any matchers and use the schema correspondences from the ground truth.
 
-- *Baseline (B)* detects an entity label column in each table and assumes all other attributes only depend on this column. 
-This configuration resembles existing approaches which only extract binary relations.
+- *Binary* detects an entity label column in each table and assumes all other attributes only depend on this column. 
+This configuration uses the manually annotated schema mapping as input and extracts a binary relation for each reference relation and resembles a perfect extractor for binary relations as baseline.
 
-- *Stitching (S)* the SNoW system with FD discovery.
-We use this configuration to evaluate the results of the FD discovery and stitching procedures without the influence of errors introduced by the matching components.
+- *N-Ary* uses functional dependency discovery instead of binary relations, but does not generate context attributes.
 
-- *Matching (M)* the SNoW system, using the matching components instead of the correspondences from the ground truth.
+- *N-Ary + C*  uses functional dependency discovery and generates context attributes.
+
+- *Match*: The SNoW system (N-ary + C), using the matching components instead of the correspondences from the annotations.
+
+- *Norm*: The end-to-end configuration of the SNoW system. Uses functional dependency discovery, generates context attributes, uses the matching components and applies normalisation.
+
+Table 1: Dataset statistics and Evaluation. A_O=original attributes, A_T=total attributes (original \& context attributes), A_U=universal attributes.
 
 <table>
-<thead><tr><th></th><th colspan=3>Schema Matching </th><th colspan=5>Schema Extension</th><th colspan=4>Reference</th></tr></thead><tbody>
- <tr><td>&nbsp;</td><td colspan=3>M</td><td>B</td><td>S</td><td colspan=3>M</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
- <tr><td>&nbsp;</td><td>P</td><td>R</td><td>F1</td><td>F1</td><td>F1</td><td>P</td><td>R</td><td>F1</td><td>Cor.</td><td>Entities</td><td>Tuples</td><td>Values</td></tr>
- <tr><td>d3football.com</td><td>0.66</td><td>0.95</td><td>0.78</td><td>0.49</td><td>0.94</td><td>0.91</td><td>0.82</td><td>0.86</td><td>1.39E+09</td><td>2,766</td><td>40,011</td><td>150,129</td></tr>
- <tr><td>data.bls.gov</td><td>0.87</td><td>0.92</td><td>0.89</td><td>0.42</td><td>0.98</td><td>0.95</td><td>0.92</td><td>0.93</td><td>4.21E+08</td><td>57</td><td>217,588</td><td>1,038,019</td></tr>
- <tr><td>flightaware.com</td><td>0.97</td><td>0.99</td><td>0.98</td><td>0.46</td><td>1.00</td><td>0.96</td><td>0.86</td><td>0.91</td><td>2.56E+07</td><td>89</td><td>46,851</td><td>187,548</td></tr>
- <tr><td>itunes.apple.com</td><td>0.92</td><td>0.75</td><td>0.83</td><td>0.68</td><td>0.90</td><td>0.81</td><td>0.77</td><td>0.79</td><td>8.94E+09</td><td>265,431</td><td>1,703,654</td><td>6,788,752</td></tr>
- <tr><td>seatgeek.com</td><td>1.00</td><td>1.00</td><td>1.00</td><td>0.99</td><td>0.99</td><td>0.99</td><td>0.94</td><td>0.97</td><td>4.95E+10</td><td>30,152</td><td>55,044</td><td>133,918</td></tr>
- <tr><td>www.amoeba.com</td><td>1.00</td><td>0.87</td><td>0.93</td><td>0.81</td><td>1.00</td><td>0.99</td><td>0.94</td><td>0.96</td><td>8.57E+07</td><td>23,348</td><td>61,658</td><td>222,481</td></tr>
- <tr><td>www.cia.gov</td><td>0.96</td><td>0.99</td><td>0.98</td><td>0.82</td><td>0.94</td><td>0.73</td><td>0.67</td><td>0.70</td><td>1.88E+09</td><td>267</td><td>48,076</td><td>131,014</td></tr>
- <tr><td>www.nndb.com</td><td>1.00</td><td>1.00</td><td>1.00</td><td>1.00</td><td>0.93</td><td>1.00</td><td>0.87</td><td>0.93</td><td>1.35E+09</td><td>40,003</td><td>133,848</td><td>343,476</td></tr>
- <tr><td>www.vgchartz.com</td><td>1.00</td><td>1.00</td><td>1.00</td><td>0.45</td><td>0.89</td><td>1.00</td><td>0.80</td><td>0.89</td><td>1.62E+09</td><td>11,711</td><td>108,066</td><td>396,959</td></tr>
- <tr><td>Avg. / Sum</td><td>0.93</td><td>0.94</td><td>0.93</td><td>0.68</td><td>0.95</td><td>0.93</td><td>0.84</td><td>0.88</td><td>6.52E+10</td><td>373,824</td><td>2,414,796</td><td>9,392,296</td></tr>
+<thead><tr><th></th><th>Web Tables</th><th colspan="3">Union Tables</th><th colspan="2">Annotation</th><th colspan="6">Experiments - F1-measure</th></tr></thead><tbody>
+ <tr><td>Host</td><td>Tables</td><td>Tables</td><td>A<sub>O</sub></td><td>A<sub>T</sub></td><td>A<sub>U</sub></td><td>FDs</td><td>Schema</td><td>Binary</td><td>N-Ary</td><td>N-ary +C</td><td>Match</td><td>Norm</td></tr>
+ <tr><td>d3football.com</td><td> 40,584   </td><td> 12   </td><td> 63   </td><td> 145   </td><td>41</td><td>18</td><td>0.779</td><td>0.495</td><td>0.382</td><td>0.935</td><td>0.861</td><td>0.861</td></tr>
+ <tr><td>data.bls.gov</td><td> 10,824   </td><td> 12   </td><td> 61   </td><td> 181   </td><td>51</td><td>12</td><td>0.895</td><td>0.415</td><td>0.487</td><td>0.984</td><td>0.900</td><td>0.900</td></tr>
+ <tr><td>flightaware.com</td><td> 2,888   </td><td> 6   </td><td> 22   </td><td> 72   </td><td>35</td><td>13</td><td>0.982</td><td>0.459</td><td>0.392</td><td>1.000</td><td>0.942</td><td>0.733</td></tr>
+ <tr><td>itunes.apple.com</td><td> 42,729   </td><td> 76   </td><td> 470   </td><td> 1,095   </td><td>59</td><td>6</td><td>0.827</td><td>0.680</td><td>0.362</td><td>0.942</td><td>0.855</td><td>0.804</td></tr>
+ <tr><td>seatgeek.com</td><td> 157,578   </td><td> 72   </td><td> 266   </td><td> 714   </td><td>71</td><td>30</td><td>0.999</td><td>0.988</td><td>0.977</td><td>0.993</td><td>0.970</td><td>0.970</td></tr>
+ <tr><td>www.amoeba.com</td><td> 5,529   </td><td> 65   </td><td> 227   </td><td> 712   </td><td>42</td><td>13</td><td>0.933</td><td>0.812</td><td>0.455</td><td>0.998</td><td>0.975</td><td>0.951</td></tr>
+ <tr><td>www.cia.gov</td><td> 30,569   </td><td> 213   </td><td> 562   </td><td> 2,225   </td><td>323</td><td>162</td><td>0.976</td><td>0.858</td><td>0.848</td><td>0.851</td><td>0.680</td><td>0.653</td></tr>
+ <tr><td>www.nndb.com</td><td> 23,522   </td><td> 29   </td><td> 123   </td><td> 299   </td><td>29</td><td>10</td><td>1.000</td><td>1.000</td><td>0.929</td><td>0.938</td><td>0.937</td><td>0.937</td></tr>
+ <tr><td>www.vgchartz.com</td><td> 23,258   </td><td> 8   </td><td> 39   </td><td> 87   </td><td>36</td><td>13</td><td>1.000</td><td>0.448</td><td>0.459</td><td>0.890</td><td>0.890</td><td>0.890</td></tr>
+ <tr><td>Sum / Macro Avg.</td><td> 337,481   </td><td> 493   </td><td> 1,833   </td><td> 5,530   </td><td>687</td><td>277</td><td>0.932</td><td>0.724</td><td>0.614</td><td>0.951</td><td>0.897</td><td>0.862</td></tr>
 </tbody></table>
 
 ### Running SNoW
@@ -98,16 +89,18 @@ JAR="path to the SNoW jar and its dependencies"
 VMARGS="-Xmx300G"
 ```
 
-To run the snow system in different configurations, use the one of following scripts, which accept the path to the dataset as parameter:
+To run the snow system in different configurations, use one of the following scripts, which accept the path to the dataset as parameter:
 
 `./run_snow datasets/d3football.com`
 
-- `run_snow_b`: Runs the snow system in configuration B
-- `run_snow`: Runs the snow system in configuration S
-- `run_snow_match`: Runs the snow system in configuration M
+- `run_snow_b`: configuration *Binary*
+- `run_snow_noContextColumns`: configuration *N-Ary*
+- `run_snow`: configuration *N-Ary + C*
+- `run_snow_match`: configuration *Match*
+- `run_snow_match_normalised`: configuration *Norm*
 - `run_snow_reference`: Creates a reference extraction based on the annotations
 
-To run the value-based evaluation, use `evaluate_containment` and provide the path to the dataset as parameter:
+To run the evaluation, use `evaluate_containment` and provide the path to the dataset as parameter:
 
 `./evaluate_containment datasets/d3football.com`
 
