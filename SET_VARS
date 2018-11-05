@@ -1,6 +1,6 @@
 #!/bin/bash
 
-J8=$JAVA_HOME
+J8="$JAVA_HOME/java"
 
 JAR="$HOME/lib/snow-1.0.jar:$HOME/lib/winter-1.3.jar:$HOME/lib/dep/*"
 
