@@ -20,6 +20,10 @@ do
 	echo $(date)": evaluating $host - $TBL"
 	$J8 $VMARGS -cp $JAR $CLS -tables $TBL -reference $EVAL -globalLog $LOG -containment -labelsMatch -filenamesMatch > $host/evaluate_containment_S.log 2>&1
 	
+	TBL="$host/normalised_S_noContextColumns_fd_relations"
+	echo $(date)": evaluating $host - $TBL"
+	$J8 $VMARGS -cp $JAR $CLS -tables $TBL -reference $EVAL -globalLog $LOG -containment -labelsMatch -filenamesMatch > $host/evaluate_containment_S_noContextColumns.log 2>&1
+	
 	TBL="$host/normalised_B_fd_relations"
 	echo $(date)": evaluating $host - $TBL"
 	$J8 $VMARGS -cp $JAR $CLS -tables $TBL -reference $EVAL -globalLog $LOG -containment -labelsMatch -filenamesMatch > $host/evaluate_containment_B.log 2>&1
@@ -27,6 +31,10 @@ do
 	TBL="$host/normalised_M_fd_relations"
 	echo $(date)": evaluating $host - $TBL"
 	$J8 $VMARGS -cp $JAR $CLS -tables $TBL -reference $EVAL -globalLog $LOG -containment -labelsMatch -filenamesMatch > $host/evaluate_containment_M.log 2>&1
+	
+	TBL="$host/normalised_M_norm_fd_relations"
+	echo $(date)": evaluating $host - $TBL"
+	$J8 $VMARGS -cp $JAR $CLS -tables $TBL -reference $EVAL -globalLog $LOG -containment -labelsMatch -filenamesMatch > $host/evaluate_containment_M_normalised.log 2>&1
 
 	echo $(date)": $host done."
 

@@ -61,18 +61,18 @@ This configuration uses the manually annotated schema mapping as input and extra
 Table 1: Dataset statistics and Evaluation. A_O=original attributes, A_T=total attributes (original \& context attributes), A_U=universal attributes.
 
 <table>
-<thead><tr><th></th><th>Web Tables</th><th colspan="3">Union Tables</th><th colspan="2">Annotation</th><th colspan="6">Experiments - F1-measure</th></tr></thead><tbody>
- <tr><td>Host</td><td>Tables</td><td>Tables</td><td>A<sub>O</sub></td><td>A<sub>T</sub></td><td>A<sub>U</sub></td><td>FDs</td><td>Schema</td><td>Binary</td><td>N-Ary</td><td>N-ary +C</td><td>Match</td><td>Norm</td></tr>
- <tr><td>d3football.com</td><td> 40,584   </td><td> 12   </td><td> 63   </td><td> 145   </td><td>41</td><td>18</td><td>0.779</td><td>0.495</td><td>0.382</td><td>0.935</td><td>0.861</td><td>0.861</td></tr>
- <tr><td>data.bls.gov</td><td> 10,824   </td><td> 12   </td><td> 61   </td><td> 181   </td><td>51</td><td>12</td><td>0.895</td><td>0.415</td><td>0.487</td><td>0.984</td><td>0.900</td><td>0.900</td></tr>
- <tr><td>flightaware.com</td><td> 2,888   </td><td> 6   </td><td> 22   </td><td> 72   </td><td>35</td><td>13</td><td>0.982</td><td>0.459</td><td>0.392</td><td>1.000</td><td>0.942</td><td>0.733</td></tr>
- <tr><td>itunes.apple.com</td><td> 42,729   </td><td> 76   </td><td> 470   </td><td> 1,095   </td><td>59</td><td>6</td><td>0.827</td><td>0.680</td><td>0.362</td><td>0.942</td><td>0.855</td><td>0.804</td></tr>
- <tr><td>seatgeek.com</td><td> 157,578   </td><td> 72   </td><td> 266   </td><td> 714   </td><td>71</td><td>30</td><td>0.999</td><td>0.988</td><td>0.977</td><td>0.993</td><td>0.970</td><td>0.970</td></tr>
- <tr><td>www.amoeba.com</td><td> 5,529   </td><td> 65   </td><td> 227   </td><td> 712   </td><td>42</td><td>13</td><td>0.933</td><td>0.812</td><td>0.455</td><td>0.998</td><td>0.975</td><td>0.951</td></tr>
- <tr><td>www.cia.gov</td><td> 30,569   </td><td> 213   </td><td> 562   </td><td> 2,225   </td><td>323</td><td>162</td><td>0.976</td><td>0.858</td><td>0.848</td><td>0.851</td><td>0.680</td><td>0.653</td></tr>
- <tr><td>www.nndb.com</td><td> 23,522   </td><td> 29   </td><td> 123   </td><td> 299   </td><td>29</td><td>10</td><td>1.000</td><td>1.000</td><td>0.929</td><td>0.938</td><td>0.937</td><td>0.937</td></tr>
- <tr><td>www.vgchartz.com</td><td> 23,258   </td><td> 8   </td><td> 39   </td><td> 87   </td><td>36</td><td>13</td><td>1.000</td><td>0.448</td><td>0.459</td><td>0.890</td><td>0.890</td><td>0.890</td></tr>
- <tr><td>Sum / Macro Avg.</td><td> 337,481   </td><td> 493   </td><td> 1,833   </td><td> 5,530   </td><td>687</td><td>277</td><td>0.932</td><td>0.724</td><td>0.614</td><td>0.951</td><td>0.897</td><td>0.862</td></tr>
+<thead><tr><th></th><th>Web Tables</th><th colspan="3">Union Tables</th><th colspan="2">Annotation</th><th colspan="6">Experiments - F1-measure</th></tr>
+ <tr><td>Host</td><td>Tables</td><td>Tables</td><td>A<sub>O</sub></td><td>A<sub>T</sub></td><td>A<sub>U</sub></td><td>FDs</td><td>Schema</td><td>Binary</td><td>N-Ary</td><td>N-ary +C</td><td>Match</td><td>Norm</td></tr></thead><tbody>
+ <tr><td>d3football.com</td><td> 40,584   </td><td> 12   </td><td> 63   </td><td> 145   </td><td>41</td><td>18</td><td>0.779</td><td>0.495</td><td>0.480</td><td>0.851</td><td>0.765</td><td>0.765</td></tr>
+ <tr><td>data.bls.gov</td><td> 10,824   </td><td> 12   </td><td> 61   </td><td> 181   </td><td>51</td><td>12</td><td>0.895</td><td>0.415</td><td>0.485</td><td>0.984</td><td>0.900</td><td>0.900</td></tr>
+ <tr><td>flightaware.com</td><td> 2,888   </td><td> 6   </td><td> 22   </td><td> 72   </td><td>35</td><td>13</td><td>0.982</td><td>0.459</td><td>0.405</td><td>1.000</td><td>0.942</td><td>0.733</td></tr>
+ <tr><td>itunes.apple.com</td><td> 42,729   </td><td> 76   </td><td> 470   </td><td> 1,095   </td><td>59</td><td>6</td><td>0.827</td><td>0.680</td><td>0.674</td><td>0.953</td><td>0.809</td><td>0.763</td></tr>
+ <tr><td>seatgeek.com</td><td> 157,578   </td><td> 72   </td><td> 266   </td><td> 714   </td><td>71</td><td>30</td><td>0.999</td><td>0.988</td><td>0.992</td><td>0.984</td><td>0.962</td><td>0.962</td></tr>
+ <tr><td>www.amoeba.com</td><td> 5,529   </td><td> 65   </td><td> 227   </td><td> 712   </td><td>42</td><td>13</td><td>0.933</td><td>0.812</td><td>0.394</td><td>0.907</td><td>0.885</td><td>0.885</td></tr>
+ <tr><td>www.cia.gov</td><td> 30,569   </td><td> 213   </td><td> 562   </td><td> 2,225   </td><td>323</td><td>162</td><td>0.976</td><td>0.858</td><td>0.836</td><td>0.821</td><td>0.660</td><td>0.635</td></tr>
+ <tr><td>www.nndb.com</td><td> 23,522   </td><td> 29   </td><td> 123   </td><td> 299   </td><td>29</td><td>10</td><td>1.000</td><td>1.000</td><td>1.000</td><td>1.000</td><td>0.999</td><td>0.999</td></tr>
+ <tr><td>www.vgchartz.com</td><td> 23,258   </td><td> 8   </td><td> 39   </td><td> 87   </td><td>36</td><td>13</td><td>1.000</td><td>0.448</td><td>0.253</td><td>1.000</td><td>1.000</td><td>1.000</td></tr>
+ <tr><td>Sum / Macro Avg.</td><td> 337,481   </td><td> 493   </td><td> 1,833   </td><td> 5,530   </td><td>687</td><td>277</td><td>0.932</td><td>0.684</td><td>0.613</td><td>0.944</td><td>0.880</td><td>0.849</td></tr>
 </tbody></table>
 
 ### Running SNoW
@@ -87,7 +87,10 @@ Before running snow, the paths in `SET_VARS` must be adjusted for your environme
 J8="path to your java 8 executable"
 JAR="path to the SNoW jar and its dependencies"
 VMARGS="-Xmx300G"
+TANE_HOME="path to the TANE implementation"
 ```
+
+Before running SNoW, you must download the implementation of the [TANE algorithm](https://www.cs.helsinki.fi/research/fdk/datamining/tane/) on your machine.
 
 To run the snow system in different configurations, use one of the following scripts, which accept the path to the dataset as parameter:
 

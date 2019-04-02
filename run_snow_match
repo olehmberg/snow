@@ -26,7 +26,7 @@ OUT="$host/normalised_M"
 rm -r $OUT
 rm -r $OUT"_csv"
 rm -r $OUT"_fd_relations"
-$J8 $VMARGS -cp $JAR $CLS -web $host/union_dedup_json/ -results $OUT -csv $OUT"_csv" -candidateKeys $host/evaluation/candidateKeys.tsv -correspondences $host/evaluation/union_goldstandard.tsv -contextCorrespondences $host/evaluation/context_correspondences.tsv -entityStructure $host/evaluation/entity_structure.tsv -entityDefinition $DEF -functionalDependencies $host/evaluation/functional_dependencies.tsv -matchTables -matcher $MATCHER -normalisation $NORM -stitching $STITCH -minEntities $ENT -minDensity $DEN -minFDApproximation $FD -minInstanceCorrespondences $INST -logEntityDetection -serialise -logFDStitching > "$host/snow_match.log" 2>&1
+$J8 $VMARGS -cp $JAR $CLS -web $host/union_dedup_json/ -results $OUT -csv $OUT"_csv" -candidateKeys $host/evaluation/candidateKeys.tsv -correspondences $host/evaluation/union_goldstandard.tsv -contextCorrespondences $host/evaluation/context_correspondences.tsv -entityStructure $host/evaluation/entity_structure.tsv -entityDefinition $DEF -functionalDependencies $host/evaluation/functional_dependencies.tsv -matchTables -matcher $MATCHER -normalisation $NORM -stitching $STITCH -minEntities $ENT -minDensity $DEN -minFDApproximation $FD -minInstanceCorrespondences $INST -logEntityDetection -serialise -logFDStitching -taneRoot $TANE_HOME > "$host/snow_match.log" 2>&1
 
 cp $host/column_classification.tsv $host/column_classification_M.tsv
 cp $host/entitytable_evaluation.tsv $host/entitytable_evaluation_M.tsv

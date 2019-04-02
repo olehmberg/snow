@@ -1,0 +1,23 @@
+#!/bin/bash
+
+trap times EXIT
+
+source SET_VARS
+
+for host in datasets/*/
+do
+	echo $host
+	
+	./run_snow_match $host
+	
+	./run_snow_match_normalised $host
+	
+	./run_snow_b $host
+	
+	./run_snow_noContextColumns $host
+	
+	./run_snow $host
+
+	echo $(date)": $host done."
+
+done
