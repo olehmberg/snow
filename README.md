@@ -1,7 +1,5 @@
 # **S**ynthesizing **N**-ary relations fr**o**m **W**eb tables (SNoW)
 
-*Under Construction - Source code will be available soon.*
-
 Web tables have been used in many approaches to extend existing data sources with additional data. 
 But so far, all approaches are limited to the extraction of binary relations. 
 We find, however, that a large number of web tables actually are n-ary relations. 
