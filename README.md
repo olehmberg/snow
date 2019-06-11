@@ -9,6 +9,8 @@ The SNoW system identifies and synthesizes n-ary relations from web tables and i
 
 Given a set of web tables and a target knowledge base, the SNoW method extends each web table with additional context columns, stitches matching web tables into larger tables, and applies functional dependency discovery to identify the relations that are represented in the web tables. Further, it normalises the stitched tables, guided by the schema of the knowledge base, to create an integrated schema.
 
+The SNoW system has been described and applied in [1,2], please cite these references if you use it in any publication.
+
 ## System Overview
 
 The following figure visualises the integration process of the SNoW system.
@@ -118,3 +120,9 @@ If you want to create the union tables for multiple web sites, create a director
 `./run_clustered_union directory_containing_all_web_sites`
 
 During the creation of the union tables, a directory `clustered_union_correspondences` is created, which contains schema correspondences among the generated context columns. These correspondences must be copied into the `evaluation` sub-directory of the dataset using the file name `context_correspondences.tsv`.
+
+## References
+
+[1] Oliver Lehmberg and Christian Bizer. 2019. Synthesizing N-ary Relations from Web Tables. In 9th International Conference on Web Intelligence, Mining and Semantics (WIMS2019), June 26-28, 2019, Seoul, Republic of Korea. ACM, New York, NY, USA.
+
+[2] Oliver Lehmberg and Christian Bizer. 2019. Profiling the Semantics of N-aryWeb Table Data. In The InternationalWorkshop on Semantic Big Data (SBD’19), July 5, 2019, Amsterdam, Netherlands. ACM, New York, NY, USA.
